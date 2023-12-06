@@ -8,11 +8,17 @@ interface UserSchoolData {
 export interface IUser extends Document {
   name: string;
   age: number;
+  email: string;
+  password: string;
+  sex?: string;
   phone?: number;
-  email?: string;
-  state: string;
+  state?: string;
   school?: ObjectId;
-  standard: number;
-  completedModules: number;
-  avatarId: number;
+  standard?: number;
+  completedModules?: string[];
+  avatarId?: number;
+  preferredLanguage?: string;
+  coins?: number;
+  experience?: string;
+  achivements?: string[]
 }
