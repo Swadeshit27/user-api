@@ -24,7 +24,7 @@ const userSchema = new Schema<IUser>({
     phone: {
         type: Number
     },
-    school: {
+    schoolId: {
         type: String
     },
     completedModules: {

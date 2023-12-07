@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express"
 
 const authentication = async (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +9,8 @@ const authentication = async (req: Request, res: Response, next: NextFunction) =
                 if (err) {
                     return res.status(401).json({ message: "unauthorized User", success: false });
                 } else {
-                    req.body.userId = data?.id;
+                    const { id } = data as JwtPayload;
+                    req.body.userId = id;
                     next();
                 }
             });

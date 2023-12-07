@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { User } from "../models/UserModel";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
-import { IUser } from "../types";
+import { School } from "../models/SchoolModel"
 
 
 export const CreateAccount = async (req: Request, res: Response) => {
@@ -17,10 +17,6 @@ export const CreateAccount = async (req: Request, res: Response) => {
         const newUser = await User.create({
             name, email, password: hashPassword, age
         })
-        console.log(newUser)
-        console.log("septe pre")
-        const token = await jwt.sign({ id: newUser._id }, process.env.SECRET_KEY!, { expiresIn: 604800 });
-        console.log("septe post")
         res.status(201).json({ message: "account created successfully", newUser, success: true })
     } catch (error) {
         res.status(500).json({ message: "Internal error", success: false })
@@ -68,6 +64,25 @@ export const UpdateProfile = async (req: Request, res: Response) => {
         await user.save();
         res.status(201).json({ message: "Profile updated", success: true });
     } catch (error) {
+        res.status(500).json({ message: "Internal error", success: false })
+    }
+}
+
+export const UpdatePoints = async (req: Request, res: Response) => {
+    try {
+        const { userId, coins } = req.body;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "user not exist", success: false })
+        }
+        const school = await School.findById(user.schoolId);
+        user.coins += coins;
+        school.coins += coins;
+        await user.save();
+        await school.save();
+        res.status(201).json({ message: "Coins updated", success: true });
+    } catch (error) {
+        console.log(error)
         res.status(500).json({ message: "Internal error", success: false })
     }
 }

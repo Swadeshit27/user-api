@@ -1,8 +1,8 @@
 import { Document, type ObjectId } from "mongoose";
 
-interface UserSchoolData {
-  name: string;
-  verified: boolean;
+export interface StudentsType {
+  studentName: string;
+  studentId: string;
 }
 
 export interface IUser extends Document {
@@ -13,7 +13,7 @@ export interface IUser extends Document {
   sex?: string;
   phone?: number;
   state?: string;
-  school?: ObjectId;
+  schoolId?: ObjectId;
   standard?: number;
   completedModules?: string[];
   avatarId?: number;
@@ -21,4 +21,21 @@ export interface IUser extends Document {
   coins?: number;
   experience?: string;
   achivements?: string[]
+}
+export interface SchoolType extends Document {
+  name: string;
+  state: string;
+  district: string;
+  pin: number;
+  students: StudentsType[],
+  groupChat:
+  {
+    studentName: String,
+    studentId: String,
+    message: String,
+    time: Date,
+  }[];
+  coins: number,
+  rank: number,
+  verified: Boolean
 }
