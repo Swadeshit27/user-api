@@ -7,6 +7,7 @@ import { School } from "../models/SchoolModel"
 
 export const CreateAccount = async (req: Request, res: Response) => {
     try {
+        console.log(req.body)
         const { name, email, password, age } = req.body;
         const isUserExist = await User.findOne({ email });
         if (isUserExist) {
