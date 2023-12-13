@@ -20,6 +20,7 @@ export const CreateAccount = async (req: Request, res: Response) => {
         })
         res.status(201).json({ message: "account created successfully", newUser, success: true })
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: "Internal error", success: false })
     }
 }
