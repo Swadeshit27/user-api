@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 
+const MONGO_URI="mongodb+srv://ATLAS2002:y6P4U0qeULn4vjyj@users.tzdubas.mongodb.net/?retryWrites=true&w=majority"
+
 export async function connectDB() {
     try {
-        mongoose.connect(process.env.MONGO_URI!);
+        mongoose.connect(MONGO_URI!);
         const connection = mongoose.connection;
         connection.on("connected", () => {
             console.log("MongoDB connected successfully");

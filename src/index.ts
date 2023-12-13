@@ -5,6 +5,8 @@ import { connectDB } from "./db";
 import authentication from "./middleware/Authentication";
 import cors from 'cors'
 
+const PORT = process.env.PORT || 8080;
+
 // database connection
 dotenv.config();
 connectDB();
@@ -27,6 +29,6 @@ app.use(UserRoute);
 app.use("/school", SchoolRoute);
 
 
-app.listen(8000, () => {
-    console.log("User service listening on port 8000");
+app.listen(PORT, () => {
+    console.log(`User service listening on port ${PORT}`);
 }) 
