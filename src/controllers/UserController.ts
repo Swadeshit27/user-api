@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { User } from "../models/UserModel";
-import bcrypt from "bcryptjs";
+import { hash } from "bcryptjs";
 import jwt from "jsonwebtoken"
 import { School } from "../models/SchoolModel"
 
@@ -13,8 +13,7 @@ export const CreateAccount = async (req: Request, res: Response) => {
         if (isUserExist) {
             return res.status(409).json({ message: "user already exist", success: false })
         }
-        const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(password, salt);
+        const hashPassword = await hash(password, 10);
         const newUser = await User.create({
             name, email, password: hashPassword, age
         })
