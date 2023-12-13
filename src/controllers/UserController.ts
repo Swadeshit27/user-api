@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { User } from "../models/UserModel";
-import { hash } from "bcryptjs";
+import { hash, compare } from "bcryptjs";
 import jwt from "jsonwebtoken"
 import { School } from "../models/SchoolModel"
 
@@ -30,7 +30,7 @@ export const Login = async (req: Request, res: Response) => {
         if (!isUserExist) {
             return res.status(404).json({ message: "user not exist", success: false })
         }
-        const isValidPass = await bcrypt.compare(password, isUserExist.password);
+        const isValidPass = await compare(password, isUserExist.password);
         if (!isValidPass) {
             return res.status(401).json({ message: "unauthorized user", success: false })
         }
