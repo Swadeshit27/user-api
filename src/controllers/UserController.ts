@@ -1,6 +1,5 @@
 import { Request, Response } from "express"
 import { User } from "../models/UserModel";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 import { School } from "../models/SchoolModel"
 
@@ -12,8 +11,8 @@ export const CreateAccount = async (req: Request, res: Response) => {
         if (isUserExist) {
             return res.status(409).json({ message: "user already exist", success: false })
         }
-        const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(password, salt);
+        // const salt = await bcrypt.genSalt(10);
+        const hashPassword = await Bun.password.hash(password);
         const newUser = await User.create({
             name, email, password: hashPassword, age
         })
@@ -30,7 +29,7 @@ export const Login = async (req: Request, res: Response) => {
         if (!isUserExist) {
             return res.status(404).json({ message: "user not exist", success: false })
         }
-        const isValidPass = await bcrypt.compare(password, isUserExist.password);
+        const isValidPass = await Bun.password.verify(password, isUserExist.password);
         if (!isValidPass) {
             return res.status(401).json({ message: "unauthorized user", success: false })
         }
