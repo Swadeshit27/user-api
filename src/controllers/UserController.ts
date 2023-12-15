@@ -1,19 +1,18 @@
 import { Request, Response } from "express"
 import { User } from "../models/UserModel";
-import { hash, compare } from "bcryptjs";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 import { School } from "../models/SchoolModel"
 
 
 export const CreateAccount = async (req: Request, res: Response) => {
     try {
-        console.log(req.body)
         const { name, email, password, age } = req.body;
         const isUserExist = await User.findOne({ email });
         if (isUserExist) {
             return res.status(409).json({ message: "user already exist", success: false })
         }
-        const hashPassword = await hash(password, 10);
+        const hashPassword = await bcrypt.hash(password, 10);
         const newUser = await User.create({
             name, email, password: hashPassword, age
         })
@@ -30,7 +29,7 @@ export const Login = async (req: Request, res: Response) => {
         if (!isUserExist) {
             return res.status(404).json({ message: "user not exist", success: false })
         }
-        const isValidPass = await compare(password, isUserExist.password);
+        const isValidPass = await bcrypt.compare(password, isUserExist.password);
         if (!isValidPass) {
             return res.status(401).json({ message: "unauthorized user", success: false })
         }
